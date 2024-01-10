@@ -1,40 +1,52 @@
-import ListItem from "./ListItem";
+import ListItem from './ListItem'
 
 interface List {
-  list: ListItem[],
-  load(): void,
-  save(): void,
-  clearList(): void,
-  addItem(itemObj: ListItem): void,
-  removeItem(id: string): void,
+    list: ListItem[],
+    load(): void,
+    save(): void,
+    clearList(): void,
+    addItem(itemObj: ListItem): void,
+    removeItem(id: string): void,
 }
 
 export default class FullList implements List {
-  constructor(public list: ListItem[] = []) {}
 
-  load(): void {
-    const list = localStorage.getItem('list');
-    if (list) {
-      this.list = JSON.parse(list);
+    static instance: FullList = new FullList()
+
+    private constructor(private _list: ListItem[] = []) { }
+
+    get list(): ListItem[] {
+        return this._list
     }
-  }
 
-  save(): void {
-    localStorage.setItem('list', JSON.stringify(this.list));
-  }
+    load(): void {
+        const storedList: string | null = localStorage.getItem("myList")
+        if (typeof storedList !== "string") return
 
-  clearList(): void {
-    this.list = [];
-    this.save();
-  }
+        const parsedList: { _id: string, _item: string, _checked: boolean }[] = JSON.parse(storedList)
 
-  addItem(itemObj: ListItem): void {
-    this.list.push(itemObj);
-    this.save();
-  }
+        parsedList.forEach(itemObj => {
+            const newListItem = new ListItem(itemObj._id, itemObj._item, itemObj._checked)
+            FullList.instance.addItem(newListItem)
+        })
+    }
 
-  removeItem(id: string): void {
-    this.list = this.list.filter((item) => item.id !== id);
-    this.save();
-  }
+    save(): void {
+        localStorage.setItem("myList", JSON.stringify(this._list))
+    }
+
+    clearList(): void {
+        this._list = []
+        this.save()
+    }
+
+    addItem(itemObj: ListItem): void {
+        this._list.push(itemObj)
+        this.save()
+    }
+
+    removeItem(id: string): void {
+        this._list = this._list.filter(item => item.id !== id)
+        this.save()
+    }
 }

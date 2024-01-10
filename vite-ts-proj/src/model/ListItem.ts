@@ -1,43 +1,38 @@
 export interface Item {
-  id: string,
-  item: string,
-  checked: boolean
+    id: string,
+    item: string,
+    checked: boolean,
 }
 
 export default class ListItem implements Item {
-  constructor(
-    public _id: string = '',
-    public _item: string = '',
-    public _checked: boolean = false,
-  ) {}
-  get id(): string {
-    return this._id;
-  }
 
-  set id(value: string) {
-    this._id = value;
-  }
+    constructor(
+        private _id: string = '',
+        private _item: string = '',
+        private _checked: boolean = false,
+    ) { }
 
-  get item(): string {
-    return this._item;
-  }
+    get id(): string {
+        return this._id
+    }
 
-  set item(value: string) {
-    this._item = value;
-  }
+    set id(id: string) {
+        this._id = id
+    }
 
-   get checked(): boolean {
-    return this._checked;
-  }
+    get item(): string {
+        return this._item
+    }
 
-  set checked(value: boolean) {
-    this._checked = value;
-  }
+    set item(item: string) {
+        this._item = item
+    }
 
+    get checked(): boolean {
+        return this._checked
+    }
+
+    set checked(checked: boolean) {
+        this._checked = checked
+    }
 }
-  
-
-
-// challenge 
-
-// create class refer to getters and setters
