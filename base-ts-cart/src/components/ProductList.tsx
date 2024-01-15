@@ -1,7 +1,6 @@
 import React, { ReactElement } from 'react'
 import useCart from '../hooks/useCart'
 import useProducts from '../hooks/useProducts'
-import { UseProductsContentType } from '../context/ProductsProvider'
 import Product from './Product'
 
 const ProductList = () => {
@@ -32,9 +31,7 @@ const ProductList = () => {
     </main>
   )
 
-  return (
-    <div>Product</div>
-  )
+  return content
 }
 
 export default ProductList

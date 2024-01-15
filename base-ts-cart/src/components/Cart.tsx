@@ -26,11 +26,25 @@ const Cart = () => {
             )
           })}
         </ul>
+
+        <div className="cart__total">
+          <p>Total Items: {totalItems}</p>
+          <p>Total Price: {totalPrice}</p>
+          <button className="cart__submit" disabled={!totalItems}
+          onClick={onSubmitOrder}>
+            Place Order
+          </button>
+        </div>
         </>
 
-  return (
-    <div>Cart</div>
+  const content = (
+    <main className="main main__cart">
+      {pageContent}
+    </main>
   )
+
+
+  return content
 }
 
 export default Cart

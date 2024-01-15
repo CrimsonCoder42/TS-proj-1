@@ -1,9 +1,79 @@
-import React from 'react'
+import { ReactElement, ChangeEvent } from "react"
+import { CartItemType } from "../context/CartProvider"
+import { ReducerActionType } from "../context/CartProvider"
+import { ReducerAction } from "../context/CartProvider"
 
-const CartLineItem = () => {
-  return (
-    <div>CartLineItem</div>
+type PropsType = {
+    item: CartItemType,
+    dispatch: React.Dispatch<ReducerAction>,
+    REDUCER_ACTIONS: ReducerActionType,
+}
+
+
+
+const CartLineItem = ({ item, dispatch, REDUCER_ACTIONS }: PropsType) => {
+
+  const img: string = new URL(`../images/${item.sku}.jpg`, import.meta.url).href
+
+  const lineTotal: number = (item.qty * item.price)
+
+  const highestQty: number = 20 > item.qty ? 20 : item.qty
+
+  const optionValues: number[] = [...Array(highestQty).keys()].map(n => n + 1)
+
+  const options: ReactElement[] = optionValues.map(n => <option key={`opt${n}`} value={n}>{n}</option>)
+
+  const onChangeQty = (e: ChangeEvent<HTMLSelectElement>) => {
+    const qty: number = parseInt(e.target.value)
+    dispatch({ type: REDUCER_ACTIONS.QUANTITY, 
+               payload: { ...item, qty } })
+  }
+
+  const onRemoveFromCart = () => dispatch({ 
+    type: REDUCER_ACTIONS.REMOVE, 
+    payload: item
+  })
+
+  const content = (
+    <li className="cart__item">
+      <img src={img} alt={item.name} className="cart__item__img" />
+      <div aria-label="Item Name">{item.name}</div>
+      <div aria-label="Price Per Item">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(item.price)}</div>
+
+      <label htmlFor="itemQty" className="offscreen">
+        Item Quantity 
+      </label>
+
+      <select 
+        name="itemQty" 
+        id="itemQty" 
+        className="cart__select"
+        value={item.qty}
+        aria-label="Item Quantity"
+        onChange={onChangeQty}
+        >{options}</select>
+
+      <div className="cart__item-subtotal" aria-label="Line Item Subtotal" >
+        {new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(lineTotal)}
+      </div>
+
+      <select className="cart__item__qty" value={item.qty} onChange={onChangeQty}>
+        {options}
+      </select>
+
+      <div className="cart__item__total">{new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(lineTotal)}</div>
+
+      <button 
+        className="cart__item__remove"
+        aria-label="Remove Item"
+        title="Remove Item" 
+        onClick={onRemoveFromCart}
+      >
+        Remove</button>
+    </li>
   )
+
+  return content
 }
 
 export default CartLineItem

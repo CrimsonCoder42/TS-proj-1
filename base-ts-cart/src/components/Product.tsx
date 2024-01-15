@@ -21,7 +21,7 @@ const Product = ({ product, dispatch, REDUCER_ACTIONS, inCart }: ProductProps):R
 
   const content = <article className="product">
                     <h3 className="product__name">{product.name}</h3>
-                    <img src="" alt="" className="product__img" />
+                    <img src={img} alt="" className="product__img" />
                     <p>{new Intl.NumberFormat('en-US', {style: 'currency', currency: 'USD'}).format(product.price)}{itemInCart}</p>
                     <button onClick={onAddToCart}>Add to Cart</button>
                   </article>
