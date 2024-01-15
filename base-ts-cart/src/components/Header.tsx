@@ -1,5 +1,6 @@
 import React from 'react'
 import Nav from './Nav'
+import useCart from '../hooks/useCart'
 
 type PropsType = {
   viewCart: boolean
@@ -7,23 +8,21 @@ type PropsType = {
 }
 
 const Header = ({ viewCart, setViewCart }: PropsType) => {
+  const { totalItems, totalPrice } = useCart()
 
   const content = (
     <header className="header">
       <div className="header__title-bar">
         <h1 className="header__title">Shopping Cart</h1>
         <div className="header__price-box">
-          <p className="header__price">Total Items: </p>
-          <p className="header__price">Total Price: </p>
+          <p className="header__price">Total Items: {totalItems}</p>
+          <p className="header__price">Total Price: {totalPrice}</p>
         </div>
       </div>
-        
-        
+        <Nav viewCart={viewCart} setViewCart={setViewCart}/>   
     </header>
   )
-  return (
-    <div>Header</div>
-  )
+  return content
 }
 
 export default Header
